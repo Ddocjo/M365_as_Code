@@ -566,6 +566,7 @@ This section lists every artifact scaffolded in the repo and step-by-step instru
 - CI / GitHub Actions:
   - `.github/workflows/terraform-plan.yml` — PR plan workflow stub.
   - `.github/workflows/audit-monitor.yml` — manual-run audit workflow stub (scheduler disabled until tenant configured).
+      - `.github/workflows/oidc-validate.yml` — manual OIDC login and Microsoft Graph token validation workflow.
 
 Implementation & Test Steps (run these one-by-one)
 
