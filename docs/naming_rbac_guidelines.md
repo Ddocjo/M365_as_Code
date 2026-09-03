@@ -70,12 +70,13 @@ Break-glass and emergency processes
 - Document emergency escalation steps in `docs/drift-response.md` and require post-incident review.
 
 Break-glass exclusion policy
-- Designate clearly-named break-glass accounts (example: `vimboc@saberboy.onmicrosoft.com`).
-- Break-glass accounts MUST NOT be managed by Terraform or automated remediation workflows. Treat them as out-of-band emergency identities.
-- Do NOT include break-glass accounts in group membership variables or module inputs used by automated `terraform apply` runs. Instead reference them in documentation only.
-- Exclude these accounts from Conditional Access policies that could block sign-in (or create an explicit exception named `breakglass-exception`).
+- The tenant's protected group is `Break Glass`; every current and future member is protected. The known protected account is `vimboc@saberboy.onmicrosoft.com`.
+- The `Break Glass` group, its members, and its owners MUST NOT be managed by Terraform or automated remediation workflows. Treat them as out-of-band emergency identities.
+- Do NOT include the group or any of its members in group membership variables, role assignments, PIM assignments, Conditional Access targets, or module inputs used by automated `terraform apply` runs. Instead reference them in documentation only.
+- Exclude the entire `Break Glass` group from every Conditional Access policy created by this project. This is a deliberate disaster-recovery exception to prevent accidental lockout.
 - Tag or annotate the account description with `break-glass` and `managed_by: manual` and record the vault location where credentials are stored.
-- Automation scripts and remediation code MUST skip or explicitly ignore any principal with the `break-glass` identifier or email `vimboc@saberboy.onmicrosoft.com`.
+- Automation scripts and remediation code MUST skip or explicitly ignore the `Break Glass` group, every member discovered in that group, any principal with the `break-glass` identifier, and the known email `vimboc@saberboy.onmicrosoft.com`.
+- Before every plan and apply, perform a protected-principal check and fail closed if a proposed change targets the group or any discovered member.
 - Any change to break-glass account configuration must follow an auditable emergency change process with at least two approvers and a post-incident review.
 
 
@@ -107,6 +108,8 @@ Operational guidelines
 - All changes must originate from GitHub PRs against the appropriate environment `terraform/environments/{env}` folder.
 - GitHub Actions must run plan and attach the plan to the PR. Applies to `main` only after approval.
 - Monitoring/audit watcher will tag findings with `git_ref` when a corresponding deployment is detected; use this file's names when linking resources in alerts.
+- Existing tenant objects are read-only discovery inputs until explicitly selected and imported. Never adopt all existing users, groups, or policies into Terraform by default.
+- Inventory existing objects before writing Terraform resources. Import only a reviewed lab object, record its Terraform address and import ID, then require a zero-unintended-change plan.
 
 References and enforcement
 - Use `CODEOWNERS` to ensure teams review changes to relevant Terraform modules.

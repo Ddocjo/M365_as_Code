@@ -590,6 +590,9 @@ Implementation & Test Steps (run these one-by-one)
       - Action: Populate `terraform/environments/lab/main.tf` with provider config using OIDC-based auth (or local auth). Example provider notes are in-file.
       - Verify: From your CI or local machine (with `GRAPH_TOKEN` or OIDC configured), run `terraform init` in `terraform/environments/lab`.
 
+      - Existing-tenant safety gate: Inventory users, groups, and Conditional Access policies read-only before adding any existing object to Terraform. Do not bulk-import or bulk-manage existing tenant resources.
+      - Protected scope: The entire `Break Glass` group and every member, including `vimboc@saberboy.onmicrosoft.com`, is permanently excluded from Terraform management, RBAC/PIM changes, Conditional Access targeting, and automated remediation. A proposed change affecting this scope must fail closed.
+
 5. RBAC: apply group
       - Action: Run `terraform plan` then `terraform apply` for `terraform/environments/lab` to create the group defined in `rbac.tf`.
       - Verify: Confirm group exists in Entra AD and has expected properties (name, description). Use Azure portal or Graph query.
