@@ -576,7 +576,7 @@ Implementation & Test Steps (run these one-by-one)
 
 2. Federated credential (OIDC)
       - Action: Create the GitHub repository first. The current GitHub owner is `Ddocjo`; the repository name is `M365_as_Code` with deployment branch `main`.
-      - Action: Add a Federated identity credential to the App Registration per `docs/github_oidc_setup.md`. The failed workflow showed GitHub's immutable subject as `repo:Ddocjo@52788963/M365_as_Code:ref:refs/heads/main`; use that exact value.
+      - Action: Add a Federated identity credential to the App Registration per `docs/github_oidc_setup.md`. The failed workflow showed GitHub's immutable subject as `repo:Ddocjo@52788963/M365_as_Code@1355411564:ref:refs/heads/main`; use that exact value.
       - Verify: GitHub `azure/login` can exchange OIDC for a token in a `workflow_dispatch` run (test with the example workflow snippet in the doc).
 
 3. Repository secrets (minimal)
@@ -603,6 +603,8 @@ Implementation & Test Steps (run these one-by-one)
 7. Audit poller (manual run, real mode)
       - Action: Update GitHub workflow or local environment with `GRAPH_TOKEN` (or use OIDC in Actions) and set `MOCK_GRAPH=false`. Run the audit watcher via `workflow_dispatch` or locally.
       - Verify: The watcher returns CA and role-change events (or sample events if mocked). Review outputs in workflow logs or local console.
+
+      - Permission checkpoint: The OIDC validation workflow also performs one read-only `GET /auditLogs/directoryAudits?$top=1` request. A `403` response means `AuditLog.Read.All` or admin consent is missing; do not add write permissions to fix a read test.
 
 8. Simulate out-of-band change
       - Action: Manually change the Conditional Access policy in the portal (e.g., disable `CA-Require-MFA-Admins`) or create a role assignment outside GitOps.

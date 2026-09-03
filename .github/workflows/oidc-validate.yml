@@ -24,3 +24,10 @@ jobs:
           set -euo pipefail
           token_json=$(az account get-access-token --resource-type ms-graph --output json)
           python -c 'import json, sys; value=json.load(sys.stdin); assert value.get("accessToken"), "No Graph access token returned"; print("OIDC login succeeded; Graph token acquired.")' <<< "$token_json"
+
+      - name: Read one audit event from Microsoft Graph
+        shell: bash
+        run: |
+          set -euo pipefail
+          response=$(az rest --method get --url 'https://graph.microsoft.com/v1.0/auditLogs/directoryAudits?$top=1')
+          python -c 'import json, sys; value=json.load(sys.stdin); assert isinstance(value.get("value"), list), "Unexpected Graph response"; print("Graph audit read succeeded; returned", len(value.get("value", [])), "event(s).")' <<< "$response"
