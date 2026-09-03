@@ -16,7 +16,7 @@ resource "azuread_group" "this" {
 
 resource "azuread_group_member" "members" {
   for_each         = toset(var.members)
-  group_object_id  = azuread_group.this.id
+  group_object_id  = azuread_group.this.object_id
   member_object_id = each.value
 }
 

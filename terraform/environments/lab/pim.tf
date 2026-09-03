@@ -1,5 +1,2 @@
-module "lab_pim" {
-  source                     = "../../modules/pim"
-  eligible_role_display_name = "Global Administrator"
-  eligible_members           = []
-}
+# PIM is intentionally not invoked here until the Graph implementation is ready.
+# This preserves the selected user's existing eligible assignment.

@@ -12,3 +12,8 @@ Existing users, groups, and policies are discovery inputs, not automatic Terrafo
 resources. The `Break Glass` group is protected and must remain unmanaged. Its current
 membership is deliberately not stored in this public repository. Any future inventory
 or plan check must fail closed if that group or one of its members is targeted.
+
+The lab helpdesk test uses `ru.test@saberboy.xyz` by explicit decision. Discovery
+found an existing eligible PIM assignment for this user, so the test must preserve
+that assignment and must not claim the user is unprivileged. The new helpdesk group
+and any additional Helpdesk Administrator eligibility are separate, reviewable changes.

@@ -12,7 +12,7 @@ Repository planning
 - Repository name: `M365_as_Code`
 - Recommended deployment branch: `main`
 - GitHub's OIDC token for this repository presented the immutable-owner subject:
-  `repo:Ddocjo@52788963/M365_as_Code:ref:refs/heads/main`
+  `repo:Ddocjo@52788963/M365_as_Code@1355411564:ref:refs/heads/main`
 - Use the exact subject from the GitHub workflow error/token when configuring Entra. Do not assume the visible owner name is the complete subject identifier.
 
 High-level steps
@@ -24,7 +24,7 @@ High-level steps
    - In the App Registration, open **Certificates & secrets > Federated credentials**.
    - Add a credential with these values:
      - **Issuer**: `https://token.actions.githubusercontent.com`
-      - **Subject**: a pattern that matches your repository and branch, e.g. `repo:YOUR_ORG/YOUR_REPO:ref:refs/heads/main`. For this repository use `repo:Ddocjo@52788963/M365_as_Code:ref:refs/heads/main`.
+      - **Subject**: a pattern that matches your repository and branch, e.g. `repo:YOUR_ORG/YOUR_REPO:ref:refs/heads/main`. For this repository use `repo:Ddocjo@52788963/M365_as_Code@1355411564:ref:refs/heads/main`.
      - **Audience**: keep the default (Azure AD token audience); when in doubt use `api://AzureADTokenExchange` or follow the Azure portal guidance.
 
 3. Grant the App appropriate Graph permissions (app-only)
