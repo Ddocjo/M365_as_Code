@@ -1,0 +1,22 @@
+name: Audit Monitor
+
+# NOTE: The scheduled run is disabled in this scaffold to avoid accidental
+# polling before an Entra tenant and credentials are configured. When ready,
+# restore a schedule trigger (e.g., every 5 minutes) or use environment-level
+# protections in GitHub Settings.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run audit watcher (mock or real)
+        env:
+          MOCK_GRAPH: ${{ secrets.MOCK_GRAPH || 'true' }}
+        run: |
+          python3 monitoring/audit_watcher/audit_watcher.py

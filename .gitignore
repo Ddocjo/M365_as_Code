@@ -1,0 +1,8 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+.venv/
+__pycache__/
+*.pyc
+secrets.yml
+monitoring/audit_watcher/last_event.json

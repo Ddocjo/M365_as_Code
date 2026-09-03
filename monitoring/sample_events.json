@@ -1,0 +1,18 @@
+[
+  {
+    "id": "evt-1",
+    "activityDateTime": "2026-09-02T12:00:00Z",
+    "activityDisplayName": "Conditional Access policy modified",
+    "initiatedBy": {"user": {"userPrincipalName": "admin@example.com"}},
+    "targetResources": [{"displayName": "CA-Require-MFA-Admins", "id": "ca-1"}],
+    "additionalDetails": {"change": "policy disabled"}
+  },
+  {
+    "id": "evt-2",
+    "activityDateTime": "2026-09-02T12:05:00Z",
+    "activityDisplayName": "Service principal created",
+    "initiatedBy": {"user": {"userPrincipalName": "svc-creator@example.com"}},
+    "targetResources": [{"displayName": "sp-mail-automation-lab", "id": "sp-1"}],
+    "additionalDetails": {"appId": "0000-1111-2222"}
+  }
+]

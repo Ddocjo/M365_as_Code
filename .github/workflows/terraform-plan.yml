@@ -1,0 +1,23 @@
+name: Terraform Plan
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Terraform Init
+        working-directory: terraform/environments/lab
+        run: terraform init
+      - name: Terraform Format
+        working-directory: terraform/environments/lab
+        run: terraform fmt -check -recursive
+      - name: Terraform Plan
+        working-directory: terraform/environments/lab
+        run: terraform plan -no-color
