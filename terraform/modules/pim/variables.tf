@@ -3,14 +3,13 @@ variable "eligible_role_display_name" {
   type        = string
 }
 
-variable "eligible_members" {
-  description = "List of Azure AD object IDs (groups) that should be eligible for the role"
-  type        = list(string)
-  default     = []
+variable "principal_id" {
+  description = "Object ID of the user or group receiving role eligibility"
+  type        = string
 }
 
-variable "require_approval" {
-  description = "Whether activation requires approval"
-  type        = bool
-  default     = true
+variable "justification" {
+  description = "Auditable justification for the eligible role assignment request"
+  type        = string
+  default     = "Lab helpdesk PIM eligibility"
 }

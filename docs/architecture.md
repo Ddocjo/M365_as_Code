@@ -21,3 +21,7 @@ and any additional Helpdesk Administrator eligibility are separate, reviewable c
 PIM is currently deferred because reliable Terraform support for eligible
 assignments and activation policies is not available for this lab. The project
 uses no Graph or shell fallback; it moves to the next Terraform-supported capability.
+
+The dedicated automation identity is tenant-owned and Terraform-managed. A
+one-time bootstrap may use an administrator session to create it, but steady-state
+GitHub Actions uses its repository-scoped OIDC credential and no personal CLI login.

@@ -20,6 +20,11 @@ High-level steps
    - In the Azure portal, go to **Azure Active Directory > App registrations > New registration**.
    - Note the `Application (client) ID` and `Directory (tenant) ID`.
 
+   - After bootstrap, the Terraform-managed application is `sp-m365-terraform-lab`.
+     Update the GitHub `AZURE_CLIENT_ID` secret to its Terraform output and use this
+     app for steady-state automation. Do not create a client secret.
+   - Current Terraform output: `8679322d-d0bb-47df-838c-3b7454d9ac8b`.
+
 2. Add a Federated Identity Credential to the App Registration
    - In the App Registration, open **Certificates & secrets > Federated credentials**.
    - Add a credential with these values:

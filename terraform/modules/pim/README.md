@@ -1,17 +1,19 @@
 
 # PIM module
 
-This module documents the boundary for Privileged Identity Management (PIM).
-Direct PIM resource support in Terraform is not sufficient for this lab. Per the
-Terraform-only rule, unsupported PIM work is deferred; no Graph or shell fallback is used.
+This module manages a directory-role eligibility schedule request using the
+Terraform AzureAD provider. It does not update or remove existing eligibility.
 
 1. Create security groups and role assignments where supported (assign roles to groups).
-2. Add PIM resources only when the selected Terraform provider reliably supports
-   eligible assignments and activation policy requirements.
+2. Use `azuread_directory_role_eligibility_schedule_request` for supported
+   eligible assignments.
 
-No PIM resource is currently invoked by the lab environment. Existing PIM state,
-including the selected user's existing eligibility, must remain unchanged.
+The module resolves a built-in role by display name and creates an eligibility
+request at tenant scope. Existing PIM state, including the selected user's
+existing eligibility, remains unchanged.
 
 Security notes
 - Preserve all existing eligible assignments and do not update or remove existing PIM state.
+- Activation approval, MFA, justification, and duration policy settings require
+   separate provider resources; if unavailable, they remain deferred.
 

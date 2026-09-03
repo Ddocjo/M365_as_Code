@@ -562,6 +562,7 @@ This section lists every artifact scaffolded in the repo and step-by-step instru
       - `tcm/baselines/`, `tcm/monitors/`, `tcm/scripts/` — TCM placeholders.
       - `monitoring/detection_rules/`, `monitoring/correlation/`, `monitoring/alerting/` — monitoring pipeline placeholders.
       - `.github/workflows/terraform-apply.yml` and `drift-check.yml` — manual workflow stubs; no scheduler is enabled.
+      - `terraform/modules/applications/` — Terraform-managed tenant automation app, service principal, and GitHub OIDC credential. Bootstrap created `sp-m365-terraform-lab`; rotate GitHub `AZURE_CLIENT_ID` to its output after required Graph permissions are granted.
 
 - CI / GitHub Actions:
   - `.github/workflows/terraform-plan.yml` — PR plan workflow stub.
@@ -592,6 +593,7 @@ Implementation & Test Steps (run these one-by-one)
 
       - Existing-tenant safety gate: Inventory users, groups, and Conditional Access policies read-only before adding any existing object to Terraform. Do not bulk-import or bulk-manage existing tenant resources.
       - Protected scope: The entire `Break Glass` group and every member, including `vimboc@saberboy.onmicrosoft.com`, is permanently excluded from Terraform management, RBAC/PIM changes, Conditional Access targeting, and automated remediation. A proposed change affecting this scope must fail closed.
+      - Bootstrap note: the lab currently uses `use_cli = true` only to create and validate the tenant-owned automation app. This is temporary; steady-state Terraform will use GitHub OIDC with the new app.
 
 5. RBAC: apply group
       - Action: Run `terraform plan` then `terraform apply` for `terraform/environments/lab` to create the group defined in `rbac.tf`.
