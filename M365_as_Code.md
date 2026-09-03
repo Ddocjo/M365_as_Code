@@ -576,7 +576,7 @@ Implementation & Test Steps (run these one-by-one)
 
 2. Federated credential (OIDC)
       - Action: Create the GitHub repository first. The current GitHub owner is `Ddocjo`; the repository name is `M365_as_Code` with deployment branch `main`.
-      - Action: Add a Federated identity credential to the App Registration per `docs/github_oidc_setup.md`. Restrict the subject to `repo:Ddocjo/M365_as_Code:ref:refs/heads/main`.
+      - Action: Add a Federated identity credential to the App Registration per `docs/github_oidc_setup.md`. The failed workflow showed GitHub's immutable subject as `repo:Ddocjo@52788963/M365_as_Code:ref:refs/heads/main`; use that exact value.
       - Verify: GitHub `azure/login` can exchange OIDC for a token in a `workflow_dispatch` run (test with the example workflow snippet in the doc).
 
 3. Repository secrets (minimal)
