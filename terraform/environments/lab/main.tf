@@ -19,5 +19,6 @@ terraform {
 }
 
 provider "azuread" {
-  # configure provider with OIDC/service principal for GitHub Actions
+  tenant_id = "aa1b4236-34f9-42df-98b3-aff54bb466f0"
+  use_cli   = true
 }
