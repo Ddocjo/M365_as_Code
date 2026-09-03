@@ -17,3 +17,7 @@ The lab helpdesk test uses `ru.test@saberboy.xyz` by explicit decision. Discover
 found an existing eligible PIM assignment for this user, so the test must preserve
 that assignment and must not claim the user is unprivileged. The new helpdesk group
 and any additional Helpdesk Administrator eligibility are separate, reviewable changes.
+
+PIM is currently deferred because reliable Terraform support for eligible
+assignments and activation policies is not available for this lab. The project
+uses no Graph or shell fallback; it moves to the next Terraform-supported capability.

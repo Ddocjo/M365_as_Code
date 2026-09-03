@@ -1,3 +1,4 @@
 # Monitoring
 
-Contains the audit watcher, Graph client helpers, detection rules, and alerting integration.
+Contains discovery scaffolding for audit monitoring. Audit polling is currently
+deferred because this project implements tenant capabilities through Terraform only.

@@ -1,22 +1,13 @@
-name: Audit Monitor
+name: Audit Monitor (Deferred)
 
-# NOTE: The scheduled run is disabled in this scaffold to avoid accidental
-# polling before an Entra tenant and credentials are configured. When ready,
-# restore a schedule trigger (e.g., every 5 minutes) or use environment-level
-# protections in GitHub Settings.
+# Audit polling is deferred because this project only implements capabilities
+# through Terraform. This workflow intentionally performs no monitoring action.
 on:
   workflow_dispatch: {}
 
 jobs:
-  audit:
+  deferred:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
-      - uses: actions/checkout@v4
-      - name: Run audit watcher (mock or real)
-        env:
-          MOCK_GRAPH: ${{ secrets.MOCK_GRAPH || 'true' }}
-        run: |
-          python3 monitoring/audit_watcher/audit_watcher.py
+      - name: Report deferred capability
+        run: echo "Audit polling is deferred until reliable Terraform support exists."

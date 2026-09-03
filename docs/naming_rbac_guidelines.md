@@ -110,6 +110,7 @@ Operational guidelines
 - Monitoring/audit watcher will tag findings with `git_ref` when a corresponding deployment is detected; use this file's names when linking resources in alerts.
 - Existing tenant objects are read-only discovery inputs until explicitly selected and imported. Never adopt all existing users, groups, or policies into Terraform by default.
 - Inventory existing objects before writing Terraform resources. Import only a reviewed lab object, record its Terraform address and import ID, then require a zero-unintended-change plan.
+- Terraform-only rule: do not use Graph, PowerShell, shell scripts, `null_resource`, or portal automation as a fallback for unsupported capabilities. Mark the capability deferred and continue with the next Terraform-supported resource.
 
 References and enforcement
 - Use `CODEOWNERS` to ensure teams review changes to relevant Terraform modules.

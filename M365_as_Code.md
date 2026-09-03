@@ -479,7 +479,7 @@ High-level milestones
 1. Design & naming: finalize resource names, tags, and ownership for CA and RBAC per `docs/naming_rbac_guidelines.md`.
 2. Terraform modules: create `terraform/modules/conditional-access` and `terraform/modules/pim` + `terraform/modules/rbac` with README and example inputs/outputs.
 3. Example environment: add `terraform/environments/lab` configuration that wires modules together for a safe lab deploy (no production changes).
-4. Audit integration: extend the existing `monitoring` skeleton to implement the Graph queries required for CA and role-change events; keep the workflow manual (no scheduler) until you enable the tenant.
+4. Audit integration: check for a reliable Terraform resource; if none exists, defer audit polling and continue with the next Terraform-supported capability.
 5. Demo runbook: create a small playbook demonstrating the lifecycle: PR → apply → manual portal change → run audit poller (manual) → detection + PR-generated remediation plan.
 
 Deliverables
@@ -539,7 +539,7 @@ This section lists every artifact scaffolded in the repo and step-by-step instru
 
 - Terraform scaffold:
   - `terraform/modules/rbac/` — module to create Azure AD groups and members (`variables.tf`, `main.tf`, `outputs.tf`, `README.md`).
-  - `terraform/modules/pim/` — PIM placeholder module with guidance and `null_resource` to hook scripts (`variables.tf`, `main.tf`, `outputs.tf`, `README.md`).
+      - `terraform/modules/pim/` — PIM boundary module; deferred until reliable Terraform resource support exists (`variables.tf`, `main.tf`, `outputs.tf`, `README.md`).
   - `terraform/environments/lab/` — example environment files (`main.tf`, `rbac.tf`, `pim.tf`) demonstrating lab deployment wiring.
 
 - Monitoring & tooling:
@@ -549,7 +549,7 @@ This section lists every artifact scaffolded in the repo and step-by-step instru
   - `monitoring/requirements.txt` — Python deps.
 
 - Scripts and placeholders:
-  - `scripts/pim_configure_example.sh` — placeholder script for PIM Graph-based configuration (implement when tenant ready).
+      - `scripts/` — reserved for documentation only; no non-Terraform tenant changes are permitted.
 
 - Additional scaffold and governance files:
       - `CONTRIBUTING.md` — local validation, security, and GitHub contribution workflow.
@@ -599,9 +599,9 @@ Implementation & Test Steps (run these one-by-one)
 
       - Security note: Before apply, confirm that the break-glass account `vimboc@saberboy.onmicrosoft.com` is NOT included in any Terraform inputs (members/owners) and that automated remediation rules will explicitly ignore principals labeled `break-glass`.
 
-6. PIM: configure eligible role placeholder
-      - Action: Implement or run the `scripts/pim_configure_example.sh` script (or replace with Graph API implementation) to configure PIM eligible members and activation requirements. This step may require granting the App Registration `RoleManagement` or `PrivilegedAccess` scopes and admin consent.
-      - Verify: Eligible assignment appears in PIM or the role assignment is visible via Graph.
+6. PIM: check Terraform support
+      - Action: Check whether the selected Terraform provider supports the required eligible assignment and activation settings. If not, mark PIM deferred and move on; do not use a Graph or script fallback.
+      - Verify: No PIM resources are changed until reliable Terraform support is confirmed.
 
 7. Audit poller (manual run, real mode)
       - Action: Update GitHub workflow or local environment with `GRAPH_TOKEN` (or use OIDC in Actions) and set `MOCK_GRAPH=false`. Run the audit watcher via `workflow_dispatch` or locally.
@@ -622,7 +622,7 @@ Implementation & Test Steps (run these one-by-one)
        - Verify: After apply, run `terraform plan` and audit poller again; final plan should show no changes and audit logs should show the action performed by the GitHub workload identity.
 
 Notes & troubleshooting
-- If a Terraform provider does not support a specific PIM or role assignment operation, prefer a Graph API script (documented in `scripts/`) and mark the resource as managed by automation in `docs/naming_rbac_guidelines.md`.
+- If a Terraform provider does not support a capability, mark it deferred and continue. Do not introduce a Graph, PowerShell, shell, or `null_resource` implementation fallback.
 - Keep the audit workflow manual while validating to avoid Actions minute consumption.
 - Use `monitoring/sample_events.json` to rehearse detection and correlation without tenant changes.
 
@@ -651,7 +651,7 @@ Suggested readings (official docs)
 Hands-on exercises (map to repo files)
 - OIDC exercise: follow `docs/github_oidc_setup.md`, create App Registration, add federated credential, and test `audit-monitor` workflow with `workflow_dispatch`.
 - RBAC exercise: run Terraform in `terraform/environments/lab` to create the group from `terraform/modules/rbac` and verify in the portal.
-- PIM exercise: review `terraform/modules/pim/README.md` and implement the sample Graph script (`scripts/pim_configure_example.sh`) to perform a dry-run.
+- PIM exercise: review `terraform/modules/pim/README.md`, confirm the capability is deferred, and move to the next Terraform-supported task.
 - Audit exercise: run the audit watcher in mock mode (`MOCK_GRAPH=true`) and step through `monitoring/sample_events.json`, then switch to a real token once tenant is ready.
 - Remediation exercise: cause a simple drift (disable CA policy in portal), run the manual poller, and generate the `terraform plan` remediation.
 

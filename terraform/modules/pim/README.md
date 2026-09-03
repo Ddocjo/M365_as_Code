@@ -1,19 +1,17 @@
 
 # PIM module
 
-This module outlines how to manage Privileged Identity Management (PIM) eligible
-assignments and activation policies. Direct PIM resource support in Terraform is
-limited; therefore the recommended pattern is:
+This module documents the boundary for Privileged Identity Management (PIM).
+Direct PIM resource support in Terraform is not sufficient for this lab. Per the
+Terraform-only rule, unsupported PIM work is deferred; no Graph or shell fallback is used.
 
 1. Create security groups and role assignments where supported (assign roles to groups).
-2. For PIM eligible configuration (activation requirements, approval workflows),
-	 use Microsoft Graph API scripts executed from a secure runner or local
-	 CI step, or use provider features when they become available.
+2. Add PIM resources only when the selected Terraform provider reliably supports
+   eligible assignments and activation policy requirements.
 
-This module includes a `null_resource` placeholder that can be wired to a
-script to implement PIM configuration via Graph.
+No PIM resource is currently invoked by the lab environment. Existing PIM state,
+including the selected user's existing eligibility, must remain unchanged.
 
 Security notes
-- Ensure scripts using Graph have least privilege application permissions and
-	run from protected CI or admin workstations.
+- Preserve all existing eligible assignments and do not update or remove existing PIM state.
 
